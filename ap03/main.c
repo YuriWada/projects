@@ -8,7 +8,9 @@ int main() {
     printf("Insira um numero inteiro positivo: ");
     scanf("%d", &n);
 
-    if (n < 0) {
+    if (n < 0) 
+    {
+        // tratamento dos dados de entrada aqui
         printf("Valor invalido!\n");
         return 1;
     }

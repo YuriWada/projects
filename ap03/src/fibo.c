@@ -1,23 +1,27 @@
 #include "../include/fibo.h"
 
 int fibo_recursivo(int n) {
-    if (n <= 2) {
-        return 1;
-    }
+    // caso base
+    if (n <= 2) return 1;
 
     return fibo_recursivo(n - 1) + fibo_recursivo(n - 2);
 }
 
 int fibo_iterativo(int n) {
     if (n == 0) return 1;
+    
     int ant = 0;
     int sum = 0;
     int aux = 1;
-    while(n > 0) {
+
+    while(n > 0) 
+    {
+        // @ant eh o valor anterior a atualizacao de @sum
         ant = sum;
         sum += aux;
         aux = ant;
         n--;
     }
+
     return sum;
 }
