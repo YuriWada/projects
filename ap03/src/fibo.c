@@ -1,13 +1,13 @@
 #include "../include/fibo.h"
 
-int fibo_recursivo(int n) {
+long long fibo_recursivo(int n) {
     // caso base
     if (n <= 2) return 1;
 
     return fibo_recursivo(n - 1) + fibo_recursivo(n - 2);
 }
 
-int fibo_iterativo(int n) {
+long long fibo_iterativo(int n) {
     if (n == 0) return 1;
     
     int ant = 0;

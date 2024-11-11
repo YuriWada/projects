@@ -1,13 +1,13 @@
 #include "../include/fatorial.h"
 
-int fatorial_recursivo(int n) {
+long long fatorial_recursivo(int n) {
     // caso base
     if (n <= 1) return 1;
 
     return fatorial_recursivo(n - 1) * n;
 }
 
-int fatorial_iterativo(int n) {
+long long fatorial_iterativo(int n) {
     int prod = 1;
 
     while (n >= 1)
