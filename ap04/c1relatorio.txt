@@ -1,0 +1,4 @@
+Analisando o código, é possível identificar o erro na linha 6
+e no for loop da linha 8. Aqui, ao vetor foram alocados 10
+espaços de memória, no entanto o loop estava tentando acessar
+uma posição a mais.
