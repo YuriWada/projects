@@ -1,0 +1,3 @@
+O vetor a não estava sendo inicializado na posição 9.
+Então, o programa tentava acessá-lo nesta posição, 
+o que gerava o problema.
