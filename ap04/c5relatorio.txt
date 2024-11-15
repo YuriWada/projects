@@ -1,0 +1,274 @@
+O problema neste código é que o ponteiro intArray
+não estava sendo liberado ao final, causando 
+vazamento de memória.
+
+Para corrigir, basta liberar a memória alocada
+para o ponteiro, utilizando free().
+
+Script started on 2024-11-15 19:50:17-03:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="236" LINES="14"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ scr[K[K[Kgcc -o[Kg -o c4[K5 c5.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c5
+==22988== Memcheck, a memory error detector
+==22988== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==22988== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==22988== Command: ./c5
+==22988== 
+intArray[701]: 701
+==22988== 
+==22988== HEAP SUMMARY:
+==22988==     in use at exit: 4,000 bytes in 1 blocks
+==22988==   total heap usage: 2 allocs, 1 frees, 5,024 bytes allocated
+==22988== 
+==22988== 4,000 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==22988==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22988==    by 0x1091E7: main (c5.c:9)
+==22988== 
+==22988== LEAK SUMMARY:
+==22988==    definitely lost: 4,000 bytes in 1 blocks
+==22988==    indirectly lost: 0 bytes in 0 blocks
+==22988==      possibly lost: 0 bytes in 0 blocks
+==22988==    still reachable: 0 bytes in 0 blocks
+==22988==         suppressed: 0 bytes in 0 blocks
+==22988== 
+==22988== For lists of detected and suppressed errors, rerun with: -s
+==22988== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c1
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+[m--Type <RET> for more, q to quit, c to continue without paging--
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+./c1: No such file or directory.
+(gdb) quit
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c1[K5
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+[m--Type <RET> for more, q to quit, c to continue without paging--
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c5[m...
+(gdb) list
+1	#include<stdlib.h>
+2	#include<stdio.h>
+3	#include<time.h>
+4	
+5	const int ARR_SIZE = 1000;
+6	
+7	int main() {
+8	    // create an array of ARR_SIZE ints
+9	    int *intArray = malloc(sizeof(int) * ARR_SIZE);
+10	
+(gdb) list
+11	    // populate them
+12	    for (int i=0; i < ARR_SIZE; i++) {
+13	        intArray[i] = i;
+14	    }
+15	
+16	    // print one out
+17	    // first, seed the random number generator
+18	    srand(time(NULL));
+19	    int randNum = rand() % ARR_SIZE;
+20	
+(gdb) list
+21	    printf("intArray[%d]: %d\n", randNum, intArray[randNum]);
+22	
+23	    // end without freeing!
+24	    return 0;
+25	}
+26	
+(gdb) break 13
+Breakpoint 1 at [34m0x11f5[m: file [32mc5.c[m, line 13.
+(gdb) break 18
+Breakpoint 2 at [34m0x121c[m: file [32mc5.c[m, line 18.
+(gdb) break 21
+Breakpoint 3 at [34m0x123d[m: file [32mc5.c[m, line 21.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c5 
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+(gdb) next[K[K[K[Kdisplay intArray[i]
+1: intArray[i] = 0
+(gdb) display i
+2: i = 0
+(gdb) display intArray[i]
+[C[C[C[C[C[Crun[K
+The program being debugged has been started already.
+Start it from the beginning? (y or n) n
+Program not restarted.
+(gdb) e[Knext
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 0
+2: i = 0
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 1
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 1
+2: i = 1
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 2
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 2
+2: i = 2
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 3
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 3
+2: i = 3
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 4
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 4
+2: i = 4
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 5
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 5
+2: i = 5
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 6
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 6
+2: i = 6
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 7
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 7
+2: i = 7
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 8
+(gdb) next
+12	    for (int i=0; i < ARR_SIZE; i++) {
+1: intArray[i] = 8
+2: i = 8
+(gdb) next
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:13
+13	        intArray[i] = i;
+1: intArray[i] = 0
+2: i = 9
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 23594] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c5
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+[m--Type <RET> for more, q to quit, c to continue without paging--
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c5[m...
+(gdb) info b
+No breakpoints or watchpoints.
+(gdb) break 21
+Breakpoint 1 at [34m0x123d[m: file [32mc5.c[m, line 21.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c5 
+
+Breakpoint 1, [33mmain[m () at [32mc5.c[m:21
+21	    printf("intArray[%d]: %d\n", randNum, intArray[randNum]);
+(gdb) display intArray[rand
+A syntax error in expression, near `'.
+(gdb) display intArray[randNum]
+1: intArray[randNum] = 124
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 24479] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -o[Kg -o c5correto c5correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --çea[K[K[Kea[K[Kleak-check=full ./c5correto
+==24958== Memcheck, a memory error detector
+==24958== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==24958== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==24958== Command: ./c5correto
+==24958== 
+intArray[792]: 792
+==24958== 
+==24958== HEAP SUMMARY:
+==24958==     in use at exit: 0 bytes in 0 blocks
+==24958==   total heap usage: 2 allocs, 2 frees, 5,024 bytes allocated
+==24958== 
+==24958== All heap blocks were freed -- no leaks are possible
+==24958== 
+==24958== For lists of detected and suppressed errors, rerun with: -s
+==24958== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 19:57:17-03:00 [COMMAND_EXIT_CODE="0"]
