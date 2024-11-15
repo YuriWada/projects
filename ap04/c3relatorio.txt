@@ -1,0 +1,271 @@
+A cada iteração do for, um novo bloco de memória
+está sendo alocado com malloc, e, no caso, apenas
+a última é liberada no free(a).
+
+Para corrigir podemos declarar o ponteiro a como
+um array de ponteiros com 10 posições.
+Depois, basta usar um for loop para liberar todos
+os ponteiros.
+
+Script started on 2024-11-15 15:06:37-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="166" LINES="22"]
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ c3[K[Kgcc - [Kg -o g3[K[Kc3 c3.c
+[?2004l
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrind c3[K[K--leak-check=full .q₢[K[K/c3
+[?2004l
+==4540== Memcheck, a memory error detector
+==4540== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4540== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==4540== Command: ./c3
+==4540== 
+==4540== 
+==4540== HEAP SUMMARY:
+==4540==     in use at exit: 3,600 bytes in 9 blocks
+==4540==   total heap usage: 10 allocs, 1 frees, 4,000 bytes allocated
+==4540== 
+==4540== 3,600 bytes in 9 blocks are definitely lost in loss record 1 of 1
+==4540==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4540==    by 0x10918E: main (c3.c:9)
+==4540== 
+==4540== LEAK SUMMARY:
+==4540==    definitely lost: 3,600 bytes in 9 blocks
+==4540==    indirectly lost: 0 bytes in 0 blocks
+==4540==      possibly lost: 0 bytes in 0 blocks
+==4540==    still reachable: 0 bytes in 0 blocks
+==4540==         suppressed: 0 bytes in 0 blocks
+==4540== 
+==4540== For lists of detected and suppressed errors, rerun with: -s
+==4540== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gdb ./c3
+[?2004l
+[35;1mGNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1[m
+Copyright (C) 2022 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c3[m...
+[?2004h(gdb) list
+[?2004l
+1	[01;34m#include[m [31m<stdio.h>[m
+2	[01;34m#include[m [31m<stdlib.h>[m
+3	
+4	[32mint[m [01mmain[m[31m([m[32mint[m argc[31m,[m [32mchar[m[31m**[m argv[31m)[m[31m{[m
+5	  [32mint[m i[31m;[m
+6	  [32mint[m [31m*[ma[31m;[m
+7	
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+10	  [31m}[m
+[?2004h(gdb) break 9
+[?2004l
+Breakpoint 1 at [34m0x1185[m: file [32mc3.c[m, line 9.
+[?2004h(gdb) run
+[?2004l
+Starting program: [32m/home/yuriwada/projects/ap04/c3[m 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "[32m/lib/x86_64-linux-gnu/libthread_db.so.1[m".
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+[?2004h[?2004l
+[?2004h(gdb) next[K[K[K[Kdisplay a
+[?2004l
+1: a = (int *[36m[m) [34m0x555555555080[m <[33m_start[m>
+[?2004h(gdb) display i
+[?2004l
+2: i = 0
+[?2004h(gdb) enex===[K[K[K[K[K[K[Knext
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x5555555592a0[m
+2: i = 0
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x5555555592a0[m
+2: i = 1
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559440[m
+2: i = 1
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559440[m
+2: i = 2
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x5555555595e0[m
+2: i = 2
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x5555555595e0[m
+2: i = 3
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559780[m
+2: i = 3
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559780[m
+2: i = 4
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559920[m
+2: i = 4
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559920[m
+2: i = 5
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559ac0[m
+2: i = 5
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559ac0[m
+2: i = 6
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559c60[m
+2: i = 6
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559c60[m
+2: i = 7
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559e00[m
+2: i = 7
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559e00[m
+2: i = 8
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x555555559fa0[m
+2: i = 8
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfc8) at [32mc3.c[m:9
+9	    a [31m=[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)[m [31m*[m [35m100[m[31m);[m
+1: a = (int *[36m[m) [34m0x555555559fa0[m
+2: i = 9
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+8	  [01;34mfor[m [31m([mi[31m=[m[35m0[m[31m;[m i [31m<[m [35m10[m[31m;[m i[31m++)[m[31m{[m
+1: a = (int *[36m[m) [34m0x55555555a140[m
+2: i = 9
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+11	  [01mfree[m[31m([ma[31m);[m
+1: a = (int *[36m[m) [34m0x55555555a140[m
+2: i = 10
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+12	  [01;34mreturn[m [35m0[m[31m;[m
+1: a = (int *[36m[m) [34m0x55555555a140[m
+2: i = 10
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+13	[31m}[m
+1: a = (int *[36m[m) [34m0x55555555a140[m
+2: i = 10
+[?2004h[?2004l
+[?2004h(gdb) next
+[?2004l
+[33m__libc_start_call_main[m ([36mmain=main@entry[m=0x555555555169 <main>, [36margc=argc@entry[m=1, [36margv=argv@entry[m=0x7fffffffdfc8) at [32m../sysdeps/nptl/libc_start_call_main.h[m:74
+74	../sysdeps/nptl/libc_start_call_main.h: No such file or directory.
+[?2004h[?2004l
+[?2004h(gdb) quit
+[?2004l
+[?2004hA debugging session is active.
+
+	Inferior 1 [process 4636] will be killed.
+
+Quit anyway? (y or n) y
+[?2004l
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gcc -o[Kg -o c3correto c3correto.c
+[?2004l
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrind --ea[K[Kleak-check=full ./c3correto
+[?2004l
+==4875== Memcheck, a memory error detector
+==4875== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4875== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==4875== Command: ./c3correto
+==4875== 
+==4875== 
+==4875== HEAP SUMMARY:
+==4875==     in use at exit: 0 bytes in 0 blocks
+==4875==   total heap usage: 10 allocs, 10 frees, 4,000 bytes allocated
+==4875== 
+==4875== All heap blocks were freed -- no leaks are possible
+==4875== 
+==4875== For lists of detected and suppressed errors, rerun with: -s
+==4875== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ exit
+[?2004l
+exit
+
+Script done on 2024-11-15 15:07:53-03:00 [COMMAND_EXIT_CODE="0"]

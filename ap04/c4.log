@@ -1,0 +1,244 @@
+Script started on 2024-11-15 15:09:50-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="58" LINES="41"]
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c4 c4. c
+[?2004l[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrind --leak- check=full ./c4
+[?2004l==5577== Memcheck, a memory error detector
+==5577== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==5577== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==5577== Command: ./c4
+==5577== 
+==5577== Use of uninitialised value of size 8
+==5577==    at 0x10917A: main (c4.c:13)
+==5577== 
+==5577== Invalid write of size 4
+==5577==    at 0x10917A: main (c4.c:13)
+==5577==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==5577== 
+==5577== 
+==5577== Process terminating with default action of signal 11 (SIGSEGV)
+==5577==  Access not within mapped region at address 0x0
+==5577==    at 0x10917A: main (c4.c:13)
+==5577==  If you believe this happened as a result of a stack
+==5577==  overflow in your program's main thread (unlikely but
+==5577==  possible), you can try to increase the size of the
+==5577==  main thread stack using the --main-stacksize= flag.
+==5577==  The main thread stack size used in this run was 8388608.
+==5577== 
+==5577== HEAP SUMMARY:
+==5577==     in use at exit: 0 bytes in 0 blocks
+==5577==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==5577== 
+==5577== All heap blocks were freed -- no leaks are possible
+==5577== 
+==5577== Use --track-origins=yes to see where uninitialised values come from
+==5577== For lists of detected and suppressed errors, rerun with: -s
+==5577== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+Segmentation fault (core dumped)
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gdb ./c4
+[?2004l[35;1mGNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1[m
+Copyright (C) 2022 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c4[m...
+[?2004h(gdb) list
+[?2004l1	[01;34m#include[m [31m<stdlib.h>[m
+2	[01;34mstruct[m [32mMatrix[m
+3	[31m{[m
+4	[32mint[m rows[31m,[m cols[31m;[m
+5	[32mint[m[31m**[m data[31m;[m
+6	[31m}[m[31m;[m
+7	[01;34mstruct[m [32mMatrix[m[31m*[m rotation3D[31m=[m[35m0[m[31m;[m
+8	[32mint[m [01mmain[m[31m()[m[31m{[m
+9	  [32mint[m i[31m;[m
+10	  [32mchar[m [31m*[m text[31m;[m
+[?2004h(gdb) help
+[?2004lList of classes of commands:
+
+[1maliases[m -- User-defined aliases of other commands.
+[1mbreakpoints[m -- Making program stop at certain points.
+[1mdata[m -- Examining data.
+[1mfiles[m -- Specifying and examining files.
+[1minternals[m -- Maintenance commands.
+[1mobscure[m -- Obscure features.
+[1mrunning[m -- Running the program.
+[1mstack[m -- Examining the stack.
+[1mstatus[m -- Status inquiries.
+[1msupport[m -- Support facilities.
+[1mtext-user-interface[m -- TUI is the GDB text based interface.
+[1mtracepoints[m -- Tracing of program execution without stopping the program.
+[1muser-defined[m -- User-defined commands.
+
+Type "help" followed by a class name for a list of commands in that class.
+Type "help all" for the list of all commands.
+Type "help" followed by command name for full 
+documentation.
+Type "apropos word" to search for commands related to "word".
+Type "apropos -v word" for full documentation
+ of commands related to "word".
+Command name abbreviations are allowed if unambiguous.
+[?2004h(gdb) help list
+[?2004l[1mlist[m, [1ml[m
+List specified function or line.
+With no argument, lists ten more lines after or around previous listing.
+"list -" lists the ten lines before a previous ten-line listing.
+One argument specifies a line, and ten lines are listed around that line.
+Two arguments with comma between specify starting and ending lines to list.
+Lines can be specified in these ways:
+  LINENUM, to list around that line in current file,
+  FILE:LINENUM, to list around that line in that file,
+  FUNCTION, to list around beginning of that function,
+  FILE:FUNCTION, to distinguish among like-named static functions.
+  *ADDRESS, to list around the line containing that address.
+With two args, if one is empty, it stands for ten lines away from
+the other arg.
+
+By default, when a single location is given, display ten lines.
+This can be changed using "set listsize", and the current value
+can be shown using "show listsize".
+[?2004h(gdb) show list siz[K[K[K[Ksize
+[?2004lNumber of source lines gdb will list by default is 10.
+[?2004h(gdb) set listsize 100
+[?2004l[?2004h(gdb) show listliz[K[K[Ksize
+[?2004lNumber of source lines gdb will list by default is 100.
+[?2004h(gdb) list
+[?2004l11	  [01;34mstruct[m [32mMatrix[m [31m*[m rotation3D[31m;[m
+12	[36m//rotation3D = (struct Matrix*) malloc(sizeof(struct Matrix));[m
+13	rotation3D[31m->[mrows[31m=[m[35m4[m[31m;[m
+14	rotation3D[31m->[mcols[31m=[m[35m4[m[31m;[m
+15	rotation3D[31m->[mdata[31m=([m[32mint[m[31m**)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m*)*[mrotation3D[31m->[mrows[31m);[m
+16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+17	rotation3D[31m->[mdata[31m[[mi[31m]=([m[32mint[m[31m*)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)*[mrotation3D[31m->[mcols[31m);[m
+18	[01mfree[m[31m([mtext[31m);[m
+19	[36m//for(i=0;i<rotation3D->rows;i++)[m
+20	[36m// free(rotation3D->data[i]);[m
+21	[01mfree[m[31m([mrotation3D[31m->[mdata[31m);[m
+22	[01mfree[m[31m([mrotation3D[31m);[m
+23	[01;34mreturn[m [35m0[m[31m;[m
+24	[31m}[m
+25	
+[?2004h(gdb) list
+[?2004lLine number 26 out of range; c4.c has 25 lines.
+[?2004h(gdb) break 15
+[?2004lBreakpoint 1 at [34m0x118b[m: file [32mc4.c[m, line 15.
+[?2004h(gdb) break 17
+[?2004lBreakpoint 2 at [34m0x11b3[m: file [32mc4.c[m, line 17.
+[?2004h(gdb) run
+[?2004lStarting program: [32m/home/yuriwada/projects/ap04/c4[m 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "[32m/lib/x86_64-linux-gnu/libthread_db.so.1[m".
+
+Breakpoint 1, [33mmain[m () at [32mc4.c[m:15
+15	rotation3D[31m->[mdata[31m=([m[32mint[m[31m**)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m*)*[mrotation3D[31m->[mrows[31m);[m
+[?2004h[?2004l[?2004h(gdb) next[K[K[K[Kdipl[K[Ksplay rotatio3D->datan3D->data
+[?2004l1: rotation3D->data = (int **[36m[m) [34m0x2f656d6f682f0000[m
+[?2004h(gdb) dis[K[K[Knext
+[?2004l16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+[?2004h[?2004l[?2004h(gdb) display i[Ki
+[?2004l2: i = 0
+[?2004h(gdb) next
+[?2004l
+Breakpoint 2, [33mmain[m () at [32mc4.c[m:17
+17	rotation3D[31m->[mdata[31m[[mi[31m]=([m[32mint[m[31m*)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)*[mrotation3D[31m->[mcols[31m);[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 0
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 0
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l
+Breakpoint 2, [33mmain[m () at [32mc4.c[m:17
+17	rotation3D[31m->[mdata[31m[[mi[31m]=([m[32mint[m[31m*)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)*[mrotation3D[31m->[mcols[31m);[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 1
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 1
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l
+Breakpoint 2, [33mmain[m () at [32mc4.c[m:17
+17	rotation3D[31m->[mdata[31m[[mi[31m]=([m[32mint[m[31m*)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)*[mrotation3D[31m->[mcols[31m);[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 2
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 2
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l
+Breakpoint 2, [33mmain[m () at [32mc4.c[m:17
+17	rotation3D[31m->[mdata[31m[[mi[31m]=([m[32mint[m[31m*)[m [01mmalloc[m[31m([m[01;34msizeof[m[31m([m[32mint[m[31m)*[mrotation3D[31m->[mcols[31m);[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 3
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l16	[01;34mfor[m[31m([mi[31m=[m[35m0[m[31m;[mi[31m<[mrotation3D[31m->[mrows[31m;[mi[31m++)[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 3
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l18	[01mfree[m[31m([mtext[31m);[m
+1: rotation3D->data = (int **[36m[m) [34m0x5555555592a0[m
+2: i = 4
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l
+Program received signal SIGSEGV, Segmentation fault.
+[34m0x00007ffff7e313fe[m in [33m__GI___libc_free[m ([36mmem[m=0x64) at [32m./malloc/malloc.c[m:3368
+3368	./malloc/malloc.c: No such file or directory.
+[?2004h[?2004l[?2004h(gdb) next
+[?2004l
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+[?2004h[?2004l[?2004h(gdb) quit
+[?2004l[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrin [Kd --chec[K[K[K[Kleak- check=full [K[K[K[K[K[K[K[K[K[K[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgcc -g -o c4corr eto c4correto.c
+[?2004l[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrid[Kn [Kd c[K--leak- check=full c4[K[K./4[Kc4correto
+[?2004l==8705== Memcheck, a memory error detector
+==8705== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==8705== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==8705== Command: ./c4correto
+==8705== 
+==8705== Conditional jump or move depends on uninitialised value(s)
+==8705==    at 0x484B235: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8705==    by 0x109209: main (c4correto.c:24)
+==8705== 
+==8705== 
+==8705== HEAP SUMMARY:
+==8705==     in use at exit: 0 bytes in 0 blocks
+==8705==   total heap usage: 6 allocs, 6 frees, 112 bytes allocated
+==8705== 
+==8705== All heap blocks were freed -- no leaks are possible
+==8705== 
+==8705== Use --track-origins=yes to see where uninitialised values come from
+==8705== For lists of detected and suppressed errors, rerun with: -s
+==8705== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c4correto[A]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c4corre[7Pto c4correto.c
+[?2004l[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c4correto c4correto.c[A]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c4correto
+[?2004l==8894== Memcheck, a memory error detector
+==8894== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==8894== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==8894== Command: ./c4correto
+==8894== 
+==8894== 
+==8894== HEAP SUMMARY:
+==8894==     in use at exit: 0 bytes in 0 blocks
+==8894==   total heap usage: 6 allocs, 6 frees, 112 bytes allocated
+==8894== 
+==8894== All heap blocks were freed -- no leaks are possible
+==8894== 
+==8894== For lists of detected and suppressed errors, rerun with: -s
+==8894== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[?2004h]0;yuriwada@BOOK-VI50OVB0DR: ~/projects/ap04[01;32myuriwada@BOOK-VI50OVB0DR[00m:[01;34m~/projects/ap04[00m$ exit
+[?2004lexit
+
+Script done on 2024-11-15 15:23:38-03:00 [COMMAND_EXIT_CODE="0"]
