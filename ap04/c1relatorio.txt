@@ -2,3 +2,205 @@ Analisando o código, é possível identificar o erro na linha 6
 e no for loop da linha 8. Aqui, ao vetor foram alocados 10
 espaços de memória, no entanto o loop estava tentando acessar
 uma posição a mais.
+
+============================================================================================================================================================================================
+Script started on 2024-11-15 14:17:20-03:00 [TERM="xterm-256color" TTY="/dev/pts/7" COLUMNS="236" LINES="13"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind -q --vgdb-error=0 ./c1[14Pgcc -g -o c1 c1.cvalgrind -q --vgdb-error=0 ./c1[14Pgcc -g -o c1 c1.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c1 c1.cvalgrind -q --vgdb-error=0 ./c1[14Pgcc -g -o c1 c1.c[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgdb ./c1
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c1[m...
+(gdb) target remove | vgdb --pid=[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kb[Kbreak 7
+Breakpoint 1 at [34m0x118a[m: file [32mc1.c[m, line 7.
+(gdb) break 9
+Breakpoint 2 at [34m0x11a1[m: file [32mc1.c[m, line 9.
+(gdb) break 11
+Breakpoint 3 at [34m0x11c4[m: file [32mc1.c[m, line 11.
+(gdb) nex[K[K[Krun
+Starting program: /home/yuriwada/projects/ap04/c1 
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:7
+7	  if (!a) return -1; /*malloc failed*/
+(gdb) e[Knext
+8	  for (i = 0; i < 11; i++){
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+(gdb) display a[i]
+1: a[i] = 0
+(gdb) display a[i]
+[C[C[C[C[C[C[8Pnext
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 0
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 1
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 2
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 3
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 4
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 5
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 6
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 7
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 8
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 0
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 9
+(gdb) next
+
+Breakpoint 2, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:9
+9	    a[i] = i;
+1: a[i] = 134465
+(gdb) next
+8	  for (i = 0; i < 11; i++){
+1: a[i] = 10
+(gdb) next
+
+Breakpoint 3, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc1.c[m:11
+11	  free(a);
+1: a[i] = 0
+(gdb) next
+12	  return 0;
+1: a[i] = 0
+(gdb) next
+13	}
+1: a[i] = 0
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 32052] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --check-leak[K[K[K[K[K[K[K[K[K[Kleak-check=full ./pr[K[Kc1
+==32391== Memcheck, a memory error detector
+==32391== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==32391== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==32391== Command: ./c1
+==32391== 
+==32391== Invalid write of size 4
+==32391==    at 0x1091B8: main (c1.c:9)
+==32391==  Address 0x4a48068 is 0 bytes after a block of size 40 alloc'd
+==32391==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32391==    by 0x109185: main (c1.c:6)
+==32391== 
+==32391== 
+==32391== HEAP SUMMARY:
+==32391==     in use at exit: 0 bytes in 0 blocks
+==32391==   total heap usage: 1 allocs, 1 frees, 40 bytes allocated
+==32391== 
+==32391== All heap blocks were freed -- no leaks are possible
+==32391== 
+==32391== For lists of detected and suppressed errors, rerun with: -s
+==32391== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind -q ./c1
+==32524== Invalid write of size 4
+==32524==    at 0x1091B8: main (c1.c:9)
+==32524==  Address 0x4a48068 is 0 bytes after a block of size 40 alloc'd
+==32524==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32524==    by 0x109185: main (c1.c:6)
+==32524== 
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 14:19:59-03:00 [COMMAND_EXIT_CODE="0"]
+============================================================================================================================================================================================
+
+Para corrigir o erro, podemos alocar 1 espaço a mais de memória:
+malloc(sizeof(int) * 11)
+
+============================================================================================================================================================================================
+Script started on 2024-11-15 14:23:08-03:00 [TERM="xterm-256color" TTY="/dev/pts/7" COLUMNS="236" LINES="13"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exitvalgrind -q ./c1[15@-leak-check=full[C[C[C[C[Cgdb ./c1[K[23@valgrind --leak-check=full[C[C[C[C[Cq ./c1[Kexit[K[Kgcc -g -o c1correto c1correto.c1[K
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c1correto
+==1149== Memcheck, a memory error detector
+==1149== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1149== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==1149== Command: ./c1correto
+==1149== 
+==1149== 
+==1149== HEAP SUMMARY:
+==1149==     in use at exit: 0 bytes in 0 blocks
+==1149==   total heap usage: 1 allocs, 1 frees, 44 bytes allocated
+==1149== 
+==1149== All heap blocks were freed -- no leaks are possible
+==1149== 
+==1149== For lists of detected and suppressed errors, rerun with: -s
+==1149== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 14:23:39-03:00 [COMMAND_EXIT_CODE="0"]
+============================================================================================================================================================================================
