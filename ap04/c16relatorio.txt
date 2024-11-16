@@ -1,0 +1,96 @@
+O programa possui problema de lógica e de retorno.
+As funções actual_calc e calc retornam 0. Além disso,
+a primeira tenta dividir um inteiro por 0.
+
+Para corrigir, podemos alterar o retorno e também inicializar
+o inteiro b como 0.
+
+Script started on 2024-11-15 23:30:27-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exitvalgrind --leak-check=full ./c15correto
+valgrind: ./c15correto: No such file or directory
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c15correto
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kvalgrind --leak-check=full ./c15correto
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[6Pgcc -g -o c15correto c15correto.c[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K6 c16.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c16 c16.cvalgrind --leak-check=full ./c15correto[K[K[K[K[K[K[K[K6
+==3841== Memcheck, a memory error detector
+==3841== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3841== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==3841== Command: ./c16
+==3841== 
+==3841== 
+==3841== Process terminating with default action of signal 8 (SIGFPE)
+==3841==  Integer divide by zero at address 0x1002D4835F
+==3841==    at 0x10913B: actual_calc (c16.c:6)
+==3841==    by 0x109170: calc (c16.c:15)
+==3841==    by 0x109189: main (c16.c:20)
+==3841== 
+==3841== HEAP SUMMARY:
+==3841==     in use at exit: 0 bytes in 0 blocks
+==3841==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==3841== 
+==3841== All heap blocks were freed -- no leaks are possible
+==3841== 
+==3841== For lists of detected and suppressed errors, rerun with: -s
+==3841== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+Floating point exception (core dumped)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c16
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c16[m...
+(gdb) break 6
+Breakpoint 1 at [34m0x1137[m: file [32mc16.c[m, line 6.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c16 
+
+Breakpoint 1, [33mactual_calc[m ([36ma[m=13, [36mb[m=0) at [32mc16.c[m:6
+6	  c=a/b;
+(gdb) display c
+1: c = 21845
+(gdb) next
+
+Program received signal SIGFPE, Arithmetic exception.
+[34m0x000055555555513b[m in [33mactual_calc[m ([36ma[m=13, [36mb[m=0) at [32mc16.c[m:6
+6	  c=a/b;
+1: c = 21845
+(gdb) 
+
+Program terminated with signal SIGFPE, Arithmetic exception.
+The program no longer exists.
+(gdb) quit
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c16 c[K[Kcorreto c16correto
+[01m[Kgcc:[m[K [01;31m[Kerror: [m[Kc16correto: No such file or directory
+[01m[Kgcc:[m[K [01;31m[Kfatal error: [m[Kno input files
+compilation terminated.
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c16correto c16correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c16correto
+==4526== Memcheck, a memory error detector
+==4526== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4526== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==4526== Command: ./c16correto
+==4526== 
+==4526== 
+==4526== HEAP SUMMARY:
+==4526==     in use at exit: 0 bytes in 0 blocks
+==4526==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==4526== 
+==4526== All heap blocks were freed -- no leaks are possible
+==4526== 
+==4526== For lists of detected and suppressed errors, rerun with: -s
+==4526== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 23:33:05-03:00 [COMMAND_EXIT_CODE="0"]
