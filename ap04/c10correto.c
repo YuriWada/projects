@@ -8,7 +8,7 @@ int main(void)
     {
         p = malloc(128);
         printf("%ld\n", (long)p);
-        free(p);
+        free(p); // libera memoria
     }
     return (0);
 }

@@ -5,14 +5,14 @@
 
 int main(void)
 {
-    char *msg = malloc(10);
+    char *msg = malloc(10); // aloca espaco suficiente
     
     strcpy(msg, "Holberton");
     msg[0] = 'R';
 
     printf("%ld, %s\n", (long)getpid(), msg);
 
-    free(msg);
+    free(msg); // libera memoria
 
     return (0);
 }
