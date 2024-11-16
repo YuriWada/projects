@@ -21,7 +21,7 @@ int main() {
 
     printf("intArray[%d]: %d\n", randNum, intArray[randNum]);
 
-    free(intArray);
+    free(intArray); // libera intArray
 
     return 0;
 }

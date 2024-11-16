@@ -8,7 +8,7 @@ struct _List {
 typedef struct _List List;
 
 List* resizeArray(List* array) {
-    int32_t* dPtr = realloc(array->data, 15 * sizeof(int32_t));
+    int32_t* dPtr = realloc(array->data, 15 * sizeof(int32_t)); // realoca array->data
     array->data = dPtr;
     return array;
 }

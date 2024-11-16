@@ -1,0 +1,419 @@
+Ambos os ponteiros foram alocados com tamanhos diferentes
+porém o for loop tentou acessar uma posição inválida 
+de source.
+
+Para corrigir, podemos alocar 1 espaço a mais para o ponteiro
+source.
+
+Script started on 2024-11-15 21:30:59-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ c[Kgcc -g -o c8 c8.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full c8.[K[K[K./c8
+==9138== Memcheck, a memory error detector
+==9138== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==9138== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==9138== Command: ./c8
+==9138== 
+==9138== Invalid read of size 1
+==9138==    at 0x1091D2: main (c8.c:9)
+==9138==  Address 0x4a480ba is 0 bytes after a block of size 26 alloc'd
+==9138==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9138==    by 0x1091B1: main (c8.c:6)
+==9138== 
+==9138== 
+==9138== HEAP SUMMARY:
+==9138==     in use at exit: 0 bytes in 0 blocks
+==9138==   total heap usage: 2 allocs, 2 frees, 53 bytes allocated
+==9138== 
+==9138== All heap blocks were freed -- no leaks are possible
+==9138== 
+==9138== For lists of detected and suppressed errors, rerun with: -s
+==9138== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c8
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c8[m...
+(gdb) break 9
+Breakpoint 1 at [34m0x11bc[m: file [32mc8.c[m, line 9.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c8 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+(gdb) next
+8	    for(uint8_t i = 0; i < 27; i++) {
+(gdb) display i
+1: i = 0 '\000'
+(gdb) display destination
+2: destination = [34m0x5555555592a0[m ""
+(gdb) display source
+3: source = [34m0x5555555592d0[m ""
+(gdb) display sourcedestinationi[K[K[K[K[K[K[K[K[K[Knext
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 1 '\001'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 1 '\001'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 2 '\002'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 2 '\002'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 3 '\003'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 3 '\003'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 4 '\004'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 4 '\004'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 5 '\005'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 5 '\005'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 6 '\006'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 6 '\006'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 7 '\a'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 7 '\a'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 8 '\b'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 8 '\b'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 9 '\t'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 9 '\t'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 10 '\n'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 10 '\n'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 11 '\v'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 11 '\v'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 12 '\f'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 12 '\f'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 13 '\r'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 13 '\r'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 14 '\016'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 14 '\016'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 15 '\017'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 15 '\017'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 16 '\020'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 16 '\020'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 17 '\021'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 17 '\021'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 18 '\022'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 18 '\022'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 19 '\023'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 19 '\023'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 20 '\024'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 20 '\024'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 21 '\025'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 21 '\025'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 22 '\026'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 22 '\026'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 23 '\027'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 23 '\027'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 24 '\030'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 24 '\030'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 25 '\031'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 25 '\031'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc8.c[m:9
+9	        *(destination + i) = *(source + i); //Look at the last iteration.
+1: i = 26 '\032'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+8	    for(uint8_t i = 0; i < 27; i++) {
+1: i = 26 '\032'
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+12	    free(destination);
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+13	    free(source);
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m ""
+(gdb) 
+14	    return 0;
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m "\240\222UUUU"
+(gdb) 
+15	}
+2: destination = [34m0x5555555592a0[m ""
+3: source = [34m0x5555555592d0[m "\240\222UUUU"
+(gdb) 
+[33m__libc_start_main[m ([36mmain[m=0x555555555189 <main>, [36margc[m=1, [36margv[m=0x7fffffffdfe8, [36minit[m=<optimized out>, [36mfini[m=<optimized out>, [36mrtld_fini[m=<optimized out>, [36mstack_end[m=0x7fffffffdfd8) at [32m../csu/libc-start.c[m:342
+342	../csu/libc-start.c: No such file or directory.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 9387] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g - [Kpo[K[Ko c8 [Kcorreto c8correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c8correto
+==9976== Memcheck, a memory error detector
+==9976== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==9976== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==9976== Command: ./c8correto
+==9976== 
+==9976== 
+==9976== HEAP SUMMARY:
+==9976==     in use at exit: 0 bytes in 0 blocks
+==9976==   total heap usage: 2 allocs, 2 frees, 54 bytes allocated
+==9976== 
+==9976== All heap blocks were freed -- no leaks are possible
+==9976== 
+==9976== For lists of detected and suppressed errors, rerun with: -s
+==9976== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 21:33:11-03:00 [COMMAND_EXIT_CODE="0"]
