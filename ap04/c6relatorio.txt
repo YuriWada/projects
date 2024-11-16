@@ -1,0 +1,153 @@
+A memória do ponteiro dPtr estava sendo realocada,
+porém sem atualizar "data" da estrutura array. Assim,
+o bloco de memória seria realocado porém o array->data
+ainda apontaria para a memória antiga, de forma que
+poderia haver um comportamento indefinido.
+
+Para corrigir, basta realocar a memória de array->data.
+
+Script started on 2024-11-15 21:04:11-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="236" LINES="14"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c6 c6.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gc[K[Kvalgbrind [K[K[K[K[K[Krind --leak-check-[K-=[K[K=full ./c6
+==2152== Memcheck, a memory error detector
+==2152== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2152== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==2152== Command: ./c6
+==2152== 
+==2152== Invalid free() / delete / delete[] / realloc()
+==2152==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2152==    by 0x109215: main (c6.c:21)
+==2152==  Address 0x4a48090 is 0 bytes inside a block of size 40 free'd
+==2152==    at 0x483DFAF: realloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2152==    by 0x1091B4: resizeArray (c6.c:12)
+==2152==    by 0x109202: main (c6.c:19)
+==2152==  Block was alloc'd at
+==2152==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2152==    by 0x1091EC: main (c6.c:18)
+==2152== 
+==2152== 
+==2152== HEAP SUMMARY:
+==2152==     in use at exit: 60 bytes in 1 blocks
+==2152==   total heap usage: 3 allocs, 3 frees, 116 bytes allocated
+==2152== 
+==2152== 60 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==2152==    at 0x483DFAF: realloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2152==    by 0x1091B4: resizeArray (c6.c:12)
+==2152==    by 0x109202: main (c6.c:19)
+==2152== 
+==2152== LEAK SUMMARY:
+==2152==    definitely lost: 60 bytes in 1 blocks
+==2152==    indirectly lost: 0 bytes in 0 blocks
+==2152==      possibly lost: 0 bytes in 0 blocks
+==2152==    still reachable: 0 bytes in 0 blocks
+==2152==         suppressed: 0 bytes in 0 blocks
+==2152== 
+==2152== For lists of detected and suppressed errors, rerun with: -s
+==2152== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ 
+[K]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c6
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c6[m...
+(gdb) list
+2	#include <stdint.h>
+3	
+4	struct _List {
+5	    int32_t* data;
+6	    int32_t length;
+7	};
+8	typedef struct _List List;
+9	
+10	List* resizeArray(List* array) {
+11	    int32_t* dPtr = array->data;
+(gdb) list
+12	    dPtr = realloc(dPtr, 15 * sizeof(int32_t)); //doesn't update array->data
+13	    return array;
+14	}
+15	
+16	int main() {
+17	    List* array = calloc(1, sizeof(List));
+18	    array->data = calloc(10, sizeof(int32_t));
+19	    array = resizeArray(array);
+20	
+21	    free(array->data);
+(gdb) list
+22	    free(array);
+23	    return 0;
+24	}
+(gdb) break 11
+Breakpoint 1 at [34m0x1199[m: file [32mc6.c[m, line 11.
+(gdb) break 19
+Breakpoint 2 at [34m0x11f7[m: file [32mc6.c[m, line 19.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c6 
+
+Breakpoint 2, [33mmain[m () at [32mc6.c[m:19
+19	    array = resizeArray(array);
+(gdb) display [K[K[K[K[K[K[K[Knext
+
+Breakpoint 1, [33mresizeArray[m ([36marray[m=0x5555555592a0) at [32mc6.c[m:11
+11	    int32_t* dPtr = array->data;
+(gdb) display d[Karray->D[Kdata
+1: array->data = (int32_t *) [34m0x5555555592c0[m
+(gdb) next
+12	    dPtr = realloc(dPtr, 15 * sizeof(int32_t)); //doesn't update array->data
+1: array->data = (int32_t *) [34m0x5555555592c0[m
+(gdb) next
+13	    return array;
+1: array->data = (int32_t *) [34m0x5555555592c0[m
+(gdb) next
+14	}
+1: array->data = (int32_t *) [34m0x5555555592c0[m
+(gdb) next
+[33mmain[m () at [32mc6.c[m:21
+21	    free(array->data);
+(gdb) next[K[K[K[Kquit
+A debugging session is active.
+
+	Inferior 1 [process 3850] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c6correto
+valgrind: ./c6correto: No such file or directory
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c5[K6correto c6correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c6correto c6correto.cvalgrind --leak-check=full ./c6correto
+==5363== Memcheck, a memory error detector
+==5363== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==5363== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==5363== Command: ./c6correto
+==5363== 
+==5363== 
+==5363== HEAP SUMMARY:
+==5363==     in use at exit: 0 bytes in 0 blocks
+==5363==   total heap usage: 3 allocs, 3 frees, 116 bytes allocated
+==5363== 
+==5363== All heap blocks were freed -- no leaks are possible
+==5363== 
+==5363== For lists of detected and suppressed errors, rerun with: -s
+==5363== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 21:19:13-03:00 [COMMAND_EXIT_CODE="0"]
