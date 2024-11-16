@@ -1,0 +1,193 @@
+A variável fact não estava sendo inicializada,
+de forma que o seu endereço de memória estava
+sendo utilizado para a iteração do for.
+
+Para corrigir, podemos inicializar fact  com 1.
+
+Script started on 2024-11-15 23:04:16-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c14 c14.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ c[Kvalgrind --leak-check=full ./c14
+==30090== Memcheck, a memory error detector
+==30090== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==30090== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==30090== Command: ./c14
+==30090== 
+Positive integer:10
+==30090== Conditional jump or move depends on uninitialised value(s)
+==30090==    at 0x48CA958: __vfprintf_internal (vfprintf-internal.c:1687)
+==30090==    by 0x48B4D3E: printf (printf.c:33)
+==30090==    by 0x109204: main (c14.c:12)
+==30090== 
+==30090== Use of uninitialised value of size 8
+==30090==    at 0x48AE69B: _itoa_word (_itoa.c:179)
+==30090==    by 0x48CA574: __vfprintf_internal (vfprintf-internal.c:1687)
+==30090==    by 0x48B4D3E: printf (printf.c:33)
+==30090==    by 0x109204: main (c14.c:12)
+==30090== 
+==30090== Conditional jump or move depends on uninitialised value(s)
+==30090==    at 0x48AE6AD: _itoa_word (_itoa.c:179)
+==30090==    by 0x48CA574: __vfprintf_internal (vfprintf-internal.c:1687)
+==30090==    by 0x48B4D3E: printf (printf.c:33)
+==30090==    by 0x109204: main (c14.c:12)
+==30090== 
+==30090== Conditional jump or move depends on uninitialised value(s)
+==30090==    at 0x48CB228: __vfprintf_internal (vfprintf-internal.c:1687)
+==30090==    by 0x48B4D3E: printf (printf.c:33)
+==30090==    by 0x109204: main (c14.c:12)
+==30090== 
+==30090== Conditional jump or move depends on uninitialised value(s)
+==30090==    at 0x48CA6EE: __vfprintf_internal (vfprintf-internal.c:1687)
+==30090==    by 0x48B4D3E: printf (printf.c:33)
+==30090==    by 0x109204: main (c14.c:12)
+==30090== 
+Factorial 10 = 112492800
+==30090== 
+==30090== HEAP SUMMARY:
+==30090==     in use at exit: 0 bytes in 0 blocks
+==30090==   total heap usage: 2 allocs, 2 frees, 2,048 bytes allocated
+==30090== 
+==30090== All heap blocks were freed -- no leaks are possible
+==30090== 
+==30090== Use --track-origins=yes to see where uninitialised values come from
+==30090== For lists of detected and suppressed errors, rerun with: -s
+==30090== ERROR SUMMARY: 21 errors from 5 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c14
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c14[m...
+(gdb) break 10
+Breakpoint 1 at [34m0x11d6[m: file [32mc14.c[m, line 10.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c14 
+Positive integer:10
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+(gdb) display fact
+1: fact = 32767
+(gdb) next
+9	  for(i = 1; i<=n; i++) 
+1: fact = 32767
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 32767
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 65534
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 65534
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 196602
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 196602
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 786408
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 786408
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 3932040
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 3932040
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 23592240
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 23592240
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 165145680
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 165145680
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = 1321165440
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = 1321165440
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = -994412928
+(gdb) 
+
+Breakpoint 1, [33mmain[m () at [32mc14.c[m:10
+10	    fact = fact*i;
+1: fact = -994412928
+(gdb) 
+9	  for(i = 1; i<=n; i++) 
+1: fact = -1354194688
+(gdb) 
+12	  printf("Factorial %d = %d\n", n, fact);
+1: fact = -1354194688
+(gdb) 
+Factorial 10 = -1354194688
+13	}
+1: fact = -1354194688
+(gdb) 
+[33m__libc_start_main[m ([36mmain[m=0x555555555189 <main>, [36margc[m=1, [36margv[m=0x7fffffffdfd8, [36minit[m=<optimized out>, [36mfini[m=<optimized out>, [36mrtld_fini[m=<optimized out>, [36mstack_end[m=0x7fffffffdfc8) at [32m../csu/libc-start.c[m:342
+342	../csu/libc-start.c: No such file or directory.
+(gdb) 
+[Inferior 1 (process 30204) exited normally]
+(gdb) quit
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ y
+y: command not found
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c14correto c14correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c14correto c14correto.c
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cy[Kgdb ./c14[23@valgrind --leak-check=full[C[C[C[C[C[Ccorreto
+==30714== Memcheck, a memory error detector
+==30714== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==30714== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==30714== Command: ./c14correto
+==30714== 
+Positive integer:10
+Factorial 10 = 3628800
+==30714== 
+==30714== HEAP SUMMARY:
+==30714==     in use at exit: 0 bytes in 0 blocks
+==30714==   total heap usage: 2 allocs, 2 frees, 2,048 bytes allocated
+==30714== 
+==30714== All heap blocks were freed -- no leaks are possible
+==30714== 
+==30714== For lists of detected and suppressed errors, rerun with: -s
+==30714== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 23:07:11-03:00 [COMMAND_EXIT_CODE="0"]
