@@ -1,0 +1,135 @@
+O programa aloca memória insuficiente
+para o tamanho da string considerada, 
+que é de 9 caracteres + o terminador nulo '\0'.
+Além disso, ele não libera a memória alocada.
+
+Para corrigir, podemos colocar o malloc como sendo 10
+e liberar a memória usando free().
+
+Script started on 2024-11-15 21:51:36-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind -[K[K[K[K[K[K[K[K[K[Kgcc -f -o [K[K[K[K[Kg -o c11 c1.[K1.l[Kc
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c1[K11
+==15013== Memcheck, a memory error detector
+==15013== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15013== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==15013== Command: ./c11
+==15013== 
+==15013== Invalid write of size 2
+==15013==    at 0x1091B4: main (c11.c:9)
+==15013==  Address 0x4a48048 is 0 bytes after a block of size 8 alloc'd
+==15013==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x10919E: main (c11.c:8)
+==15013== 
+==15013== Invalid read of size 1
+==15013==    at 0x483EF54: strlen (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x48CBD14: __vfprintf_internal (vfprintf-internal.c:1688)
+==15013==    by 0x48B4D3E: printf (printf.c:33)
+==15013==    by 0x1091DF: main (c11.c:11)
+==15013==  Address 0x4a48048 is 0 bytes after a block of size 8 alloc'd
+==15013==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x10919E: main (c11.c:8)
+==15013== 
+==15013== Invalid read of size 1
+==15013==    at 0x48E270C: _IO_new_file_xsputn (fileops.c:1219)
+==15013==    by 0x48E270C: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==15013==    by 0x48CA0FB: __vfprintf_internal (vfprintf-internal.c:1688)
+==15013==    by 0x48B4D3E: printf (printf.c:33)
+==15013==    by 0x1091DF: main (c11.c:11)
+==15013==  Address 0x4a48048 is 0 bytes after a block of size 8 alloc'd
+==15013==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x10919E: main (c11.c:8)
+==15013== 
+==15013== Invalid read of size 1
+==15013==    at 0x48436A0: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x48E2631: _IO_new_file_xsputn (fileops.c:1236)
+==15013==    by 0x48E2631: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==15013==    by 0x48CA0FB: __vfprintf_internal (vfprintf-internal.c:1688)
+==15013==    by 0x48B4D3E: printf (printf.c:33)
+==15013==    by 0x1091DF: main (c11.c:11)
+==15013==  Address 0x4a48048 is 0 bytes after a block of size 8 alloc'd
+==15013==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x10919E: main (c11.c:8)
+==15013== 
+15013, Rolberton
+==15013== 
+==15013== HEAP SUMMARY:
+==15013==     in use at exit: 8 bytes in 1 blocks
+==15013==   total heap usage: 2 allocs, 1 frees, 1,032 bytes allocated
+==15013== 
+==15013== 8 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==15013==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15013==    by 0x10919E: main (c11.c:8)
+==15013== 
+==15013== LEAK SUMMARY:
+==15013==    definitely lost: 8 bytes in 1 blocks
+==15013==    indirectly lost: 0 bytes in 0 blocks
+==15013==      possibly lost: 0 bytes in 0 blocks
+==15013==    still reachable: 0 bytes in 0 blocks
+==15013==         suppressed: 0 bytes in 0 blocks
+==15013== 
+==15013== For lists of detected and suppressed errors, rerun with: -s
+==15013== ERROR SUMMARY: 7 errors from 5 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c11correto c11correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=ful [Kl ./c11correto
+==15419== Memcheck, a memory error detector
+==15419== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15419== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==15419== Command: ./c11correto
+==15419== 
+==15419== Invalid write of size 2
+==15419==    at 0x1091B4: main (c11correto.c:9)
+==15419==  Address 0x4a48048 is 8 bytes inside a block of size 9 alloc'd
+==15419==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15419==    by 0x10919E: main (c11correto.c:8)
+==15419== 
+==15419== Invalid read of size 1
+==15419==    at 0x483EF54: strlen (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15419==    by 0x48CBD14: __vfprintf_internal (vfprintf-internal.c:1688)
+==15419==    by 0x48B4D3E: printf (printf.c:33)
+==15419==    by 0x1091DF: main (c11correto.c:11)
+==15419==  Address 0x4a48049 is 0 bytes after a block of size 9 alloc'd
+==15419==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15419==    by 0x10919E: main (c11correto.c:8)
+==15419== 
+15419, Rolberton
+==15419== 
+==15419== HEAP SUMMARY:
+==15419==     in use at exit: 9 bytes in 1 blocks
+==15419==   total heap usage: 2 allocs, 1 frees, 1,033 bytes allocated
+==15419== 
+==15419== 9 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==15419==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15419==    by 0x10919E: main (c11correto.c:8)
+==15419== 
+==15419== LEAK SUMMARY:
+==15419==    definitely lost: 9 bytes in 1 blocks
+==15419==    indirectly lost: 0 bytes in 0 blocks
+==15419==      possibly lost: 0 bytes in 0 blocks
+==15419==    still reachable: 0 bytes in 0 blocks
+==15419==         suppressed: 0 bytes in 0 blocks
+==15419== 
+==15419== For lists of detected and suppressed errors, rerun with: -s
+==15419== ERROR SUMMARY: 4 errors from 3 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c11correto
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[6Pgcc -g -o c11correto c11correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c11correto c11correto.c
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cvalgrind --leak-check=full ./c11correto
+==15799== Memcheck, a memory error detector
+==15799== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15799== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==15799== Command: ./c11correto
+==15799== 
+15799, Rolberton
+==15799== 
+==15799== HEAP SUMMARY:
+==15799==     in use at exit: 0 bytes in 0 blocks
+==15799==   total heap usage: 2 allocs, 2 frees, 1,034 bytes allocated
+==15799== 
+==15799== All heap blocks were freed -- no leaks are possible
+==15799== 
+==15799== For lists of detected and suppressed errors, rerun with: -s
+==15799== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 21:57:30-03:00 [COMMAND_EXIT_CODE="0"]
