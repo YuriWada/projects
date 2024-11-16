@@ -1,0 +1,151 @@
+O código não possui problemas de implementação,
+porém podemos melhorar o loop for.
+
+Para melhorar o loop, inicializamos a variável a fora dele.
+
+Script started on 2024-11-15 23:27:14-03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exitvalgrind --leak-check=full ./c14correto
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[6Pgcc -g -o c14correto c14correto.c
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cvalgrind --leak-check=full ./c14correto
+[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[K[K[K[K[Kgcc -c[K[K-g -o c15 c15.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --[K0[K-leak-check=full ./c15
+==2807== Memcheck, a memory error detector
+==2807== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2807== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==2807== Command: ./c15
+==2807== 
+==2807== 
+==2807== HEAP SUMMARY:
+==2807==     in use at exit: 0 bytes in 0 blocks
+==2807==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==2807== 
+==2807== All heap blocks were freed -- no leaks are possible
+==2807== 
+==2807== For lists of detected and suppressed errors, rerun with: -s
+==2807== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c15
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c15[m...
+(gdb) list
+1	#include <stdio.h>
+2	#include <stdlib.h>
+3	
+4	int inc(int a) {
+5	  return a+1;
+6	}
+7	
+8	int main(int argc, char** argv) {
+9	  for(int i=1; i < 5; i++) {
+10	     int a = 1;
+(gdb) list
+11	     a = inc(a);
+12	  }
+13	
+14	  return argc;
+15	}
+(gdb) li[K[Kbreak 10
+Breakpoint 1 at [34m0x1158[m: file [32mc15.c[m, line 10.
+(gdb) display a
+No symbol "a" in current context.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c15 
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc15.c[m:10
+10	     int a = 1;
+(gdb) display a
+1: a = 0
+(gdb) display i
+2: i = 1
+(gdb) next
+11	     a = inc(a);
+1: a = 1
+2: i = 1
+(gdb) 
+9	  for(int i=1; i < 5; i++) {
+2: i = 1
+(gdb) 
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc15.c[m:10
+10	     int a = 1;
+1: a = 2
+2: i = 2
+(gdb) 
+11	     a = inc(a);
+1: a = 1
+2: i = 2
+(gdb) 
+9	  for(int i=1; i < 5; i++) {
+2: i = 2
+(gdb) 
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc15.c[m:10
+10	     int a = 1;
+1: a = 2
+2: i = 3
+(gdb) 
+11	     a = inc(a);
+1: a = 1
+2: i = 3
+(gdb) 
+9	  for(int i=1; i < 5; i++) {
+2: i = 3
+(gdb) 
+
+Breakpoint 1, [33mmain[m ([36margc[m=1, [36margv[m=0x7fffffffdfd8) at [32mc15.c[m:10
+10	     int a = 1;
+1: a = 2
+2: i = 4
+(gdb) 
+11	     a = inc(a);
+1: a = 1
+2: i = 4
+(gdb) 
+9	  for(int i=1; i < 5; i++) {
+2: i = 4
+(gdb) 
+14	  return argc;
+(gdb) 
+15	}
+(gdb) 
+[33m__libc_start_main[m ([36mmain[m=0x55555555513c <main>, [36margc[m=1, [36margv[m=0x7fffffffdfd8, [36minit[m=<optimized out>, [36mfini[m=<optimized out>, [36mrtld_fini[m=<optimized out>, [36mstack_end[m=0x7fffffffdfc8) at [32m../csu/libc-start.c[m:342
+342	../csu/libc-start.c: No such file or directory.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 2942] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c15correto c15correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-cj[Kheck=full.[K ./c15correto
+==3266== Memcheck, a memory error detector
+==3266== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3266== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==3266== Command: ./c15correto
+==3266== 
+==3266== 
+==3266== HEAP SUMMARY:
+==3266==     in use at exit: 0 bytes in 0 blocks
+==3266==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==3266== 
+==3266== All heap blocks were freed -- no leaks are possible
+==3266== 
+==3266== For lists of detected and suppressed errors, rerun with: -s
+==3266== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ exit
+exit
+
+Script done on 2024-11-15 23:29:17-03:00 [COMMAND_EXIT_CODE="1"]
