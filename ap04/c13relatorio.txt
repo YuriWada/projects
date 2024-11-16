@@ -1,0 +1,116 @@
+Para o ponteiro p, a memória foi alocada
+3 vezes, mas só foi liberada 1x.
+
+Para corrigir, podemos usar free() a cada
+vez que a memória for alocada.
+
+Script started on 2024-11-15 22:44:33-03:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="236" LINES="23"]
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ hgcc [K[K[K[K[Kgcc -g -o c13 c13.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ valgrind --leak-check=full ./c1[K13
+==25723== Memcheck, a memory error detector
+==25723== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==25723== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==25723== Command: ./c13
+==25723== 
+==25723== 
+==25723== HEAP SUMMARY:
+==25723==     in use at exit: 35 bytes in 2 blocks
+==25723==   total heap usage: 3 allocs, 1 frees, 47 bytes allocated
+==25723== 
+==25723== 16 bytes in 1 blocks are definitely lost in loss record 1 of 2
+==25723==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25723==    by 0x1091A6: main (c13.c:11)
+==25723== 
+==25723== 19 bytes in 1 blocks are definitely lost in loss record 2 of 2
+==25723==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25723==    by 0x10917E: main (c13.c:8)
+==25723== 
+==25723== LEAK SUMMARY:
+==25723==    definitely lost: 35 bytes in 2 blocks
+==25723==    indirectly lost: 0 bytes in 0 blocks
+==25723==      possibly lost: 0 bytes in 0 blocks
+==25723==    still reachable: 0 bytes in 0 blocks
+==25723==         suppressed: 0 bytes in 0 blocks
+==25723== 
+==25723== For lists of detected and suppressed errors, rerun with: -s
+==25723== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gdb ./c13
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.2) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32m./c13[m...
+(gdb) break 8
+Breakpoint 1 at [34m0x1175[m: file [32mc13.c[m, line 8.
+(gdb) break 9
+Breakpoint 2 at [34m0x1183[m: file [32mc13.c[m, line 9.
+(gdb) break 11
+Breakpoint 3 at [34m0x119d[m: file [32mc13.c[m, line 11.
+(gdb) run
+Starting program: /home/yuriwada/projects/ap04/c13 
+
+Breakpoint 1, [33mmain[m () at [32mc13.c[m:8
+8	  p = (char *) malloc(19);
+(gdb) display p
+1: p = [34m0x0[m
+(gdb) display p[K[K[K[K[K[K[K[K[Knext
+
+Breakpoint 2, [33mmain[m () at [32mc13.c[m:9
+9	  p = (char *) malloc(12);
+1: p = [34m0x5555555592a0[m ""
+(gdb) 
+10	  free(p);
+1: p = [34m0x5555555592c0[m ""
+(gdb) 
+
+Breakpoint 3, [33mmain[m () at [32mc13.c[m:11
+11	  p = (char *) malloc(16);
+1: p = [34m0x5555555592c0[m ""
+(gdb) 
+13	  return 0;
+1: p = [34m0x5555555592c0[m ""
+(gdb) 
+14	}
+1: p = [34m0x5555555592c0[m ""
+(gdb) 
+[33m__libc_start_main[m ([36mmain[m=0x555555555169 <main>, [36margc[m=1, [36margv[m=0x7fffffffdfd8, [36minit[m=<optimized out>, [36mfini[m=<optimized out>, [36mrtld_fini[m=<optimized out>, [36mstack_end[m=0x7fffffffdfc8) at [32m../csu/libc-start.c[m:342
+342	../csu/libc-start.c: No such file or directory.
+(gdb) quit y[K-y
+No symbol "y" in current context.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 26053] will be killed.
+
+Quit anyway? (y or n) y
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c13correto c13correto.c
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ gcc -g -o c13correto c13correto.cdb ./c13[K[23@valgrind --leak-check=full[C[C[C[C[C[Ccorreto
+==26440== Memcheck, a memory error detector
+==26440== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26440== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==26440== Command: ./c13correto
+==26440== 
+==26440== 
+==26440== HEAP SUMMARY:
+==26440==     in use at exit: 0 bytes in 0 blocks
+==26440==   total heap usage: 3 allocs, 3 frees, 47 bytes allocated
+==26440== 
+==26440== All heap blocks were freed -- no leaks are possible
+==26440== 
+==26440== For lists of detected and suppressed errors, rerun with: -s
+==26440== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;yuriwada@Yuri: ~/projects/ap04[01;32myuriwada@Yuri[00m:[01;34m~/projects/ap04[00m$ eix[K[Kxit
+exit
+
+Script done on 2024-11-15 22:47:02-03:00 [COMMAND_EXIT_CODE="0"]
