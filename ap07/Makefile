@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -Iinclude -pg
 OBJDIR = obj
 BINDIR = bin
 SRCDIR = src
