@@ -1,18 +1,26 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct s_grafo Grafo;
 
-Grafo* NovoGrafo();
-void DeletaGrafo(Grafo* g);
+Grafo *NovoGrafo();
+void DeletaGrafo(Grafo *g);
 
-void InsereVertice(Grafo* g);
-void InsereAresta(Grafo* g, int v, int w);
+void InsereVertice(Grafo *g);
+void InsereAresta(Grafo *g, int v, int w);
 
-int QuantidadeVertices(Grafo* g);
-int QuantidadeArestas(Grafo* g);
+int QuantidadeVertices(Grafo *g);
+int QuantidadeArestas(Grafo *g);
 
-int GrauMinimo(Grafo* g);
-int GrauMaximo(Grafo* g);
+int GrauMinimo(Grafo *g);
+int GrauMaximo(Grafo *g);
 
-void ImprimeVizinhos(Grafo* g, int v);
+void ImprimeVizinhos(Grafo *g, int v);
+
+//check connectivity between vertices
+int EhAresta(Grafo *g, int v, int w);
+
+#endif

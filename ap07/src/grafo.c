@@ -1,60 +1,101 @@
 #include "../include/grafo.h"
 
-/**
- * n -> numero de vertices
- * m -> numero de arestas
- * adj -> matriz de adjacencia
- */
-struct s_grafo 
+// internal graph structure
+struct s_grafo
 {
-    int n;        
-    int m;        
-    int** adj;    
+    int n;     // number of vertices
+    int m;     // number of edges
+    int **adj; // adjacency matrix
 };
 
-Grafo* NovoGrafo() 
+// check if there is an edge between vertices v and w
+int EhAresta(Grafo *g, int v, int w)
 {
-    Grafo* g = (Grafo*)malloc(sizeof(Grafo));
+    if (v < 0 || v >= g->n || w < 0 || w >= g->n)
+    {
+        return 0; // index out of bounds
+    }
+    return g->adj[v][w];
+}
+
+// create a new graph and initializes its structure
+Grafo *NovoGrafo()
+{
+    Grafo *g = (Grafo *)malloc(sizeof(Grafo));
+    if (!g)
+    {
+        fprintf(stderr, "Error allocating memory for the graph.\n");
+        exit(EXIT_FAILURE);
+    }
     g->n = 0;
     g->m = 0;
     g->adj = NULL;
     return g;
 }
 
-void DeletaGrafo(Grafo* g) 
+// delete the graph and frees all allocated memory
+void DeletaGrafo(Grafo *g)
 {
-    if (g->adj) 
+    if (g)
     {
-        for (int i = 0; i < g->n; i++) 
+        if (g->adj)
         {
-            free(g->adj[i]);
+            for (int i = 0; i < g->n; i++)
+            {
+                free(g->adj[i]);
+            }
+            free(g->adj);
         }
-        free(g->adj);
-    }
-    free(g);
-}
-
-void InsereVertice(Grafo* g) 
-{
-    g->n++;
-    g->adj = (int**)realloc(g->adj, g->n * sizeof(int*));
-    g->adj[g->n - 1] = (int*)calloc(g->n, sizeof(int));
-    for (int i = 0; i < g->n - 1; i++) 
-    {
-        g->adj[i] = (int*)realloc(g->adj[i], g->n * sizeof(int));
-        g->adj[i][g->n - 1] = 0;
+        free(g);
     }
 }
 
-void InsereAresta(Grafo* g, int v, int w) 
+// add a new vertex to the graph
+void InsereVertice(Grafo *g)
 {
-    if (v >= g->n || w >= g->n) 
+    if (!g)
+        return;
+
+    g->n++; // increment the vertex count
+    g->adj = (int **)realloc(g->adj, g->n * sizeof(int *));
+    if (!g->adj)
     {
-        fprintf(stderr, "Erro: Vértice inválido.\n");
+        fprintf(stderr, "Error reallocating memory for the adjacency matrix.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // allocate memory for the new row and initialize it with zeros
+    g->adj[g->n - 1] = (int *)calloc(g->n, sizeof(int));
+    if (!g->adj[g->n - 1])
+    {
+        fprintf(stderr, "Error allocating a new row for the adjacency matrix.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // expand each existing row to include the new column
+    for (int i = 0; i < g->n - 1; i++)
+    {
+        g->adj[i] = (int *)realloc(g->adj[i], g->n * sizeof(int));
+        if (!g->adj[i])
+        {
+            fprintf(stderr, "Error reallocating a column in the adjacency matrix.\n");
+            exit(EXIT_FAILURE);
+        }
+        g->adj[i][g->n - 1] = 0; // initialize the new column value to zero
+    }
+}
+
+// add an edge between vertices v and w
+void InsereAresta(Grafo *g, int v, int w)
+{
+    if (!g || v >= g->n || w >= g->n || v < 0 || w < 0)
+    {
+        fprintf(stderr, "Error: Invalid vertex.\n");
         return;
     }
 
-    if (g->adj[v][w] == 0) 
+    // Check if the edge does not already exist
+    if (g->adj[v][w] == 0)
     {
         g->adj[v][w] = 1;
         g->adj[w][v] = 1;
@@ -62,57 +103,71 @@ void InsereAresta(Grafo* g, int v, int w)
     }
 }
 
-int QuantidadeVertices(Grafo* g) 
+// return the number of vertices in the graph
+int QuantidadeVertices(Grafo *g)
 {
-    return g->n;
+    return g ? g->n : 0;
 }
 
-int QuantidadeArestas(Grafo* g) 
+// return the number of edges in the graph
+int QuantidadeArestas(Grafo *g)
 {
-    return g->m;
+    return g ? g->m : 0;
 }
 
-int GrauMinimo(Grafo* g) 
+// Compute and returns the minimum degree of the graph
+int GrauMinimo(Grafo *g)
 {
-    int min = g->n;
-    for (int i = 0; i < g->n; i++) 
+    if (!g || g->n == 0)
+        return 0;
+
+    int min = g->n; // start with the maximum possible degree
+    for (int i = 0; i < g->n; i++)
     {
         int grau = 0;
-        for (int j = 0; j < g->n; j++) 
+        for (int j = 0; j < g->n; j++)
         {
-            grau += g->adj[i][j];
+            grau += g->adj[i][j]; // count edges for vertex i
         }
-        if (grau < min) min = grau;
+        if (grau < min)
+            min = grau; // update minimum degree
     }
     return min;
 }
 
-int GrauMaximo(Grafo* g) 
+// compute and return the maximum degree of the graph
+int GrauMaximo(Grafo *g)
 {
-    int max = 0;
-    for (int i = 0; i < g->n; i++) 
+    if (!g || g->n == 0)
+        return 0;
+
+    int max = 0; // start with the minimum possible degree
+    for (int i = 0; i < g->n; i++)
     {
         int grau = 0;
-        for (int j = 0; j < g->n; j++) 
+        for (int j = 0; j < g->n; j++)
         {
             grau += g->adj[i][j];
         }
-        if (grau > max) max = grau;
+        if (grau > max)
+            max = grau;
     }
     return max;
 }
 
-void ImprimeVizinhos(Grafo* g, int v) 
+// print all neighbors of vertex v
+void ImprimeVizinhos(Grafo *g, int v)
 {
-    if (v >= g->n) 
+    if (!g || v >= g->n || v < 0)
     {
-        fprintf(stderr, "Erro: Vértice inválido.\n");
+        fprintf(stderr, "Error: Invalid vertex.\n");
         return;
     }
-    
-    for (int i = 0; i < g->n; i++) 
+
+    // iterate through the adjacency matrix row for vertex v
+    for (int i = 0; i < g->n; i++)
     {
-        if (g->adj[v][i]) 
+        if (g->adj[v][i])
         {
             printf("%d ", i);
         }
