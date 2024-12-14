@@ -32,6 +32,8 @@ Mat *createMatrix(int i, int j)
             exit(1);
         }
     }
+
+    return m;
 }
 
 void initMatrix(Mat *m)
@@ -53,4 +55,55 @@ void deleteMatrix(Mat *m)
     }
     free(m->e);
     free(m);
+}
+
+/**
+ * Mult matrices follows the formula
+ * c(ij) = sum(k->n)[a(ik)*b(kj)]
+ */
+Mat *multMat(Mat *a, Mat *b)
+{
+    if (a->c != b->r)
+    {
+        printf("Matrices doesn't follow the requirements!");
+        return NULL;
+    }
+
+    Mat *c = createMatrix(a->r, b->c);
+    initMatrix(c);
+
+    for (int i = 0; i < a->r; i++)
+    {
+        for (int j = 0; j < b->c; j++)
+        {
+            for (int k = 0; k < a->c; k++)
+            {
+                c->e[i][j] += a->e[i][k] * b->e[k][j];
+            }
+        }
+    }
+
+    return c;
+}
+
+Mat *sumMat(Mat *a, Mat *b)
+{
+    if (a->r != b->r || a->c != b->c)
+    {
+        printf("Matrices doesn't follow the requirements");
+        return NULL;
+    }
+
+    Mat *c = createMatrix(a->r, a->c);
+    initMatrix(c);
+
+    for (int i = 0; i < c->r; i++)
+    {
+        for (int j = 0; j < c->c; j++)
+        {
+            c->e[i][j] = a->e[i][j] + b->e[i][j];
+        }
+    }
+    
+    return c;
 }
