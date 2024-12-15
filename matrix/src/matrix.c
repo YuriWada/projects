@@ -57,6 +57,24 @@ void deleteMatrix(Mat *m)
     free(m);
 }
 
+void printMat(Mat *m)
+{
+    if (!m->e)
+    {
+        printf("Cannot print null matrix!");
+        return;
+    }
+
+    for (int i = 0; i < m->r; i++)
+    {
+        for (int j = 0; j < m->c; j++)
+        {
+            printf("%d ", m->e[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 /**
  * Mult matrices follows the formula
  * c(ij) = sum(k->n)[a(ik)*b(kj)]
@@ -107,3 +125,21 @@ Mat *sumMat(Mat *a, Mat *b)
     
     return c;
 }
+
+Mat *transposed(Mat *m)
+{
+    Mat *mt = createMatrix(m->r, m->c);
+    initMatrix(mt);
+
+    for (int i = 0; i < m->c; i++)
+    {
+        for (int j = 0; j < m->r; j++)
+        {
+            mt->e[i][j] = m->e[j][i];
+        }
+    }
+
+    return mt;
+}
+
+

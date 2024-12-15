@@ -15,7 +15,10 @@ Mat *createMatrix(int i, int j);
 void initMatrix(Mat *m);
 void deleteMatrix(Mat *m);
 
+void printMat(Mat *m);
+
 Mat *multMat(Mat *a, Mat *b);
 Mat *sumMat(Mat *a, Mat *b);
+Mat *transposed(Mat *m);
 
 #endif

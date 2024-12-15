@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -pg
+CFLAGS = -Iinclude -Wall -g -pg
 
 SRC = src/matrix.c src/aux/aux.c main.c
 OBJ = obj/matrix.o obj/aux.o obj/main.o
