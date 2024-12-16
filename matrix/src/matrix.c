@@ -126,6 +126,28 @@ Mat *sumMat(Mat *a, Mat *b)
     return c;
 }
 
+Mat *subsMat(Mat *a, Mat *b)
+{
+    if (a->r != b->r || a->c != b->c)
+    {
+        printf("Matrices doesn't follow the requirements");
+        return NULL;
+    }
+
+    Mat *c = createMatrix(a->r, a->c);
+    initMatrix(c);
+
+    for (int i = 0; i < c->r; i++)
+    {
+        for (int j = 0; j < c->c; j++)
+        {
+            c->e[i][j] = a->e[i][j] - b->e[i][j];
+        }
+    }
+    
+    return c;
+}
+
 Mat *transposed(Mat *m)
 {
     Mat *mt = createMatrix(m->r, m->c);

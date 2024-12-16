@@ -19,6 +19,7 @@ void printMat(Mat *m);
 
 Mat *multMat(Mat *a, Mat *b);
 Mat *sumMat(Mat *a, Mat *b);
+Mat *subsMat(Mat *a, Mat *b);
 Mat *transposed(Mat *m);
 
 #endif

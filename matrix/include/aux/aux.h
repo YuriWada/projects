@@ -1,3 +1,5 @@
+#include "../matrix.h"
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -5,28 +7,25 @@
 
 #define MATRIX_MULTIPLICATION 1
 #define MATRIX_ADD 2
-#define MATRIX_SUBSTRACT 3
+#define MATRIX_SUBTRACT 3
+#define MATRIX_TRANSPOSE 4
 
-typedef struct alg
-{
+typedef struct alg {
     int num;
-    char * name;
+    char *name;
 } alg_t;
 
-typedef struct opt
-{
+typedef struct opt {
     int size;
     int alg;
+    char *file1;
+    char *file2;
 } opt_t;
 
-alg_t algvet[] =
-{
-    {MATRIX_MULTIPLICATION, "m"},
-    {MATRIX_ADD, "a"},
-    {MATRIX_SUBSTRACT, "s"},
-    {0, 0}
-};
-
-int name2num (char * name);
+// Funções auxiliares
+int name2num(char *name);
 void opcoes();
-void parse_args(int argc, char ** argv, opt_t * opt);
+void parse_args(int argc, char **argv, opt_t *opt);
+int count_columns(FILE *file);
+int count_rows(FILE *file);
+Mat *read_csv(const char *filename);
