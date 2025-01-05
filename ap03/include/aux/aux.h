@@ -23,18 +23,12 @@ typedef struct opt
 {
     int size;
     int alg;
+    char *opt;
 } opt_t;
-
-alg_t algvet[] =
-{
-    {TASK1, "tk1"},
-    {TASK2, "tk2"},
-    {0, 0}
-};
 
 int name2num (char * name);
 void opcoes();
 void parse_args(int argc, char ** argv, opt_t * opt);
-int clkDiff(struct timespec t1, struct timespec t2, struct timespec * res);
+void clkDiff(struct timespec t1, struct timespec t2, struct timespec * res);
 
 #endif /* AUX_H */

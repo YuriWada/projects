@@ -1,10 +1,12 @@
-#include "src/fatorial.c"
-#include "src/fibo.c"
-#include "src/aux/aux.c"
+#include "include/fatorial.h"
+#include "include/fibo.h"
+#include "include/aux/aux.h"
+
+#include <time.h>
 
 int main(int argc, char **argv)
 {
-    //char pref[100];
+    // char pref[100];
     opt_t opt;
     struct timespec inittp, endtp, restp;
     int retp;
@@ -12,17 +14,17 @@ int main(int argc, char **argv)
     parse_args(argc, argv, &opt);
 
     retp = clock_gettime(CLOCK_MONOTONIC, &inittp);
-    
-    switch(opt.alg)
+
+    switch (opt.alg)
     {
-        case TASK1:
-            printf("fatorial recursive(%d): %lld\n", opt.size, fatorial_recursivo(opt.size));
-            printf("fatorial iterative(%d): %lld\n", opt.size,fatorial_iterativo(opt.size));
-            break;
-        case TASK2:
-            printf("fibonacci recursive(%d): %lld\n", opt.size, fibo_recursivo(opt.size));
-            printf("fibonacci iterative(%d): %lld\n", opt.size, fibo_iterativo(opt.size));
-            break;
+    case TASK1:
+        printf("fatorial recursive(%d): %lld\n", opt.size, fatorial_recursivo(opt.size));
+        printf("fatorial iterative(%d): %lld\n", opt.size, fatorial_iterativo(opt.size));
+        break;
+    case TASK2:
+        printf("fibonacci recursive(%d): %lld\n", opt.size, fibo_recursivo(opt.size));
+        printf("fibonacci iterative(%d): %lld\n", opt.size, fibo_iterativo(opt.size));
+        break;
     }
     retp = clock_gettime(CLOCK_MONOTONIC, &endtp);
     clkDiff(inittp, endtp, &restp);

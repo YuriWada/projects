@@ -1,5 +1,12 @@
 #include "../../include/aux/aux.h"
 
+alg_t algvet[] =
+{
+    {TASK1, "tk1"},
+    {TASK2, "tk2"},
+    {0, 0}
+};
+
 int name2num (char * name)
 {
     int i = 0;
@@ -56,7 +63,7 @@ void parse_args(int argc, char ** argv, opt_t * opt)
     }
 }
 
-int clkDiff(struct timespec t1, struct timespec t2,
+void clkDiff(struct timespec t1, struct timespec t2,
         struct timespec * res)
 {
   if (t2.tv_nsec < t1.tv_nsec)
