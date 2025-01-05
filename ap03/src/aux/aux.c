@@ -22,8 +22,8 @@ void opcoes()
 {
     fprintf(stderr, "-f <int> (vector size)\n");
     fprintf(stderr, "\t-t <tk1|tk2>\t(task)\n");
-    fprintf(stderr, "\t    tk1\ttask 1\n");
-    fprintf(stderr, "\t    tk2\ttask 2\n");    
+    fprintf(stderr, "\t    tk1\tfatorial\n");
+    fprintf(stderr, "\t    tk2\tfibonacci\n");    
 }
 
 void parse_args(int argc, char ** argv, opt_t * opt)

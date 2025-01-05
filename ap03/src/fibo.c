@@ -4,6 +4,12 @@ long long fibo_recursivo(int n) {
     // caso base
     if (n <= 2) return 1;
 
+    // volatile double result = 1.0;
+    // for (int i = 0; i < 1000000; i++) {
+    //     result *= n;
+    //     result /= (n + 1);
+    // }
+
     return fibo_recursivo(n - 1) + fibo_recursivo(n - 2);
 }
 

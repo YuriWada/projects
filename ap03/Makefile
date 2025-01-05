@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -g
+CFLAGS = -Iinclude -Wall -pg
 
 SRC = src/fatorial.c src/fibo.c src/aux/aux.c main.c
 OBJ = obj/fatorial.o obj/fibo.o obj/aux.o obj/main.o
@@ -8,7 +8,7 @@ BIN = bin/main.out
 all: directories $(BIN)
 
 $(BIN): $(OBJ)
-	$(CC) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 obj/fatorial.o: src/fatorial.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -26,4 +26,4 @@ directories:
 	mkdir -p obj bin
 
 clean:
-	rm -f obj/*.o bin/main.out
+	rm -f obj/*.o bin/main.out gmon.out
