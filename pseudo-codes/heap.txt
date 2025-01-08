@@ -1,0 +1,68 @@
+// Iterativo
+Insere(x)
+    v[t] ← x
+    i ← t		
+    p ← (i - 1)/2
+    Enquanto v[i] > v[p] faça:
+        Troque os valores de v[i] e v[p]
+        i ← p		
+    p ← (i - 1)/2
+    t ← t + 1
+
+// Recursivo
+Insere(x)
+    v[t] ← x
+    i ← t
+    t ← t + 1
+    AjustaParaCima(i)
+
+AjustaParaCima(i)
+    se i == 0 então
+        retorne
+    p ← (i - 1)/2
+    se v[i] > v[p] então
+        Troque os valores de v[i] e v[p]
+        AjustaParaCima(p)
+
+
+// Remoção
+// Iterativo
+Remove()
+	x ← v[0]
+    v[0] ← v[t-1]
+    t ← t - 1
+    i ← 0
+    s ← índice do maior sucessor de i
+    Enquanto v[i] < v[s] faça:
+        Troque os valores de v[i] e v[s]
+        i ← s
+    s ← índice do maior sucessor de i
+        Retorne x
+
+// Recursivo
+Remove()
+    x ← v[0]
+    v[0] ← v[t-1]
+    t ← t - 1
+    AjustaParaBaixo(0)
+    Retorne x
+
+AjustaParaBaixo(i)
+    s ← índice do maior sucessor de i
+    se s == -1 ou v[i] ≥ v[s] então
+        retorne
+    Troque os valores de v[i] e v[s]
+    AjustaParaBaixo(s)
+
+
+
+// Min Heap
+Insere(x)
+    v[t] ← x
+    i ← t		
+    p ← (i - 1)/2
+    Enquanto i > 0 e v[i] < v[p] faça:
+        Troque os valores de v[i] e v[p]
+        i ← p		
+    p ← (i - 1)/2
+    t ← t + 1

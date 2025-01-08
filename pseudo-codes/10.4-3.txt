@@ -1,0 +1,13 @@
+PRINT-KEY(node):
+    stack = []
+    stack.append(node)
+
+    while stack:
+        current stack.pop() 
+        print curret.key
+
+        if curret.right:
+            stack.append(current.right)
+        
+        if current.left:
+            stack.append(current.left)

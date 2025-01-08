@@ -1,0 +1,10 @@
+ALLOCATE-OBJECT()
+    1 if free == NIL
+    2   error “out of space”
+    3 else x = free-1
+    4   free = x+1
+    5 return x
+
+FREE-OBJECT(x)
+    1 x+1 = free
+    2 free = x

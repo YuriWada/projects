@@ -1,0 +1,6 @@
+PRINT-KEY(T)
+  if T == NIL
+    return
+  print T.key        // Visite o nó atual
+  PRINT-KEY(T.left)  // Visite o filho esquerdo
+  PRINT-KEY(T.right) // Visite o filho direito

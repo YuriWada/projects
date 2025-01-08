@@ -1,0 +1,6 @@
+PRINT-KEY(node)
+  if node == NIL
+    return
+  print node.key       
+  PRINT-KEY(node.left-child)  
+  PRINT-KEY(node.right-sibling) 
